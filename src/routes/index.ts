@@ -15,6 +15,10 @@ const SeguimientoOV = lazy(() => import('../pages/Ventas/SeguimientoOV'));
 
 const ResumenLocales = lazy(() => import('../pages/Ventas/ResumenLocales'));
 
+const ResumenLocal = lazy(() => import('../pages/Ventas/ResumenLocal'));
+
+const ResumenLocalDetalle = lazy(() => import('../pages/Ventas/ResumenLocalDetalle'));
+
 const coreRoutes = [
   {
     path: '/ventas/seguimiento-ov',
@@ -27,6 +31,21 @@ const coreRoutes = [
     path: '/ventas/resumen-locales',
     title: 'Resumen de Ventas de Locales',
     component: ResumenLocales,
+  },
+
+  
+  {
+    path: '/ventas/resumen-local/',
+    search:"?localId=number",
+    title: 'Resumen de Ventas por Local',
+    component: ResumenLocal,
+  },
+  
+  {
+    path: '/ventas/resumen-local-detalle/',
+    search:"?localId=number",
+    title: 'Resumen de Ventas por Local Detallado',
+    component: ResumenLocalDetalle,
   },
 
 
