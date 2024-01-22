@@ -13,11 +13,20 @@ const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
 
 const SeguimientoOV = lazy(() => import('../pages/Ventas/SeguimientoOV'));
 
+const ResumenLocales = lazy(() => import('../pages/Ventas/ResumenLocales'));
+
 const coreRoutes = [
   {
     path: '/ventas/seguimiento-ov',
     title: 'Seguimiento OV',
     component: SeguimientoOV,
+  },
+
+  
+  {
+    path: '/ventas/resumen-locales',
+    title: 'Resumen de Ventas de Locales',
+    component: ResumenLocales,
   },
 
 

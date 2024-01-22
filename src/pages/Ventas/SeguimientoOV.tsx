@@ -19,10 +19,13 @@ const SeguimientoOV = () => {
   };
 
     const getReportData = async() => {
+        const userString:string = window.localStorage.getItem('WindsorIntranetUser')||"";
+        console.log(userString);
+        const user = JSON.parse(userString);
+        console.log(user);
         setLoading(true)        
         let options = {
             //body: paramData,
-            headers: { "content-type": "application/json" },
         };  
         await api.get(`api/v1/report/seg-ov/${paramData.orderNo}`, options).then((res:any) => {
             if (!res.err) {
