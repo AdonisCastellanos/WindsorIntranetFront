@@ -1,5 +1,5 @@
 export const helpHttp:any = () => {
-    const serverApi = "http://186.103.166.99:3000/";
+    const serverApi = "http://localhost:3000/";
     
     const customFetch = async (endpoint:any, options:any) => {
 
@@ -7,6 +7,7 @@ export const helpHttp:any = () => {
             accept: "application/json",
             "Access-Control-Allow-Origin":'http://localhost:3000',
             "Access-Control-Allow-Credentials":'true',
+            "Content-Type": "application/json",
         };
 
         const controller = new AbortController();

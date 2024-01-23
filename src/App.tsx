@@ -1,6 +1,7 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { helpHttp } from "./common/Helpers/helpHttp";
 
 import ECommerce from './pages/Dashboard/ECommerce';
 import SignIn from './pages/Authentication/SignIn';
@@ -12,17 +13,24 @@ const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
-  const [auth, setAuth] = useState<boolean>(true);//window.localStorage.getItem('WindsorIntranetUserToken')!==null
+  const [auth, setAuth] = useState<boolean>(window.localStorage.getItem('WindsorIntranetUser')!==null);
+  //const [user, setUser] = useState<any>();
+  const [errorMessage, setErrorMessage] = useState({});
+  
+  let api = helpHttp();
 
   const logout = () => {
-    window.localStorage.removeItem('WindsorIntranetUserToken');
+    localStorage.removeItem('WindsorIntranetUser');
     setAuth(false);
   }
 
-  const singin = (username: string, password: string) => {
+  const singin = async (username: string, password: string) => {
     setLoading(true)
-    console.log(username,password)
-    if(username==="admin" && password==="1234"){
+    console.log(username,password)      
+    let options = {
+        body: {username,password},
+    };  
+    /*if(username==="admin" && password==="1234"){
       setAuth(true);
       window.localStorage.setItem(
         "WindsorIntranetUserToken", (`${username} ${password}`)
@@ -31,11 +39,26 @@ function App() {
     }
     else {      
       setAuth(false);
-    }
+    }*/
+    await api.post(`api/v1/auth/login/`, options).then((res:any) => {
+      if (!res.err) {
+        let user = JSON.stringify(res);
+        window.localStorage.setItem(
+          "WindsorIntranetUser", user
+        )
+        console.log(res)
+        console.log(user)
+        setAuth(true);
+      } else {
+        setErrorMessage(res.message);
+      }
+  }).catch((err:any) => console.log(err));
+
     setLoading(false)
   }
 
   useEffect(() => {
+    
     setTimeout(() => setLoading(false), 1000);
   }, []);
 

@@ -6,6 +6,8 @@ import { useSearchParams } from "react-router-dom";
 
 const ResumenLocal = (  ) => {
     const [loading, setLoading] = useState<boolean>(false);
+    
+    const [paramData, setParamData] = useState<{reportDate:string}>({reportDate:new Date().toISOString().substring(0, 10)});
 
     const [reportData, setReportData] =  useState<[{localId:string,local:string,fecha:string}]>([{localId:"",local:"",fecha:""}]);
 
@@ -16,6 +18,9 @@ const ResumenLocal = (  ) => {
     
     let api = helpHttp();    
 
+    const handleChange = (e:any) => {
+        setParamData({ ...paramData, [e.target.name]: e.target.value });
+      };
     
     let Currency = new Intl.NumberFormat('es-CL', {
         style: 'currency',
@@ -27,9 +32,13 @@ const ResumenLocal = (  ) => {
           let options = {
               //body: paramData,
           };  
-          await api.get(`api/v1/report/resumen-local-detalle/${searchParams.get("localId")}`, options).then((res:any) => {
+          await api.get(`api/v1/report/resumen-local-detalle/${searchParams.get("localId")}/?date=${paramData.reportDate}`, options).then((res:any) => {
               if (!res.err) {
-              setReportData(res);
+                if(res.length>0){
+                    setReportData(res);
+                  }else{
+                    setReportData([{localId:"",local:"",fecha:""}]);
+                  }
               } else {
               setErrorMessage(res.errors);
               }
@@ -37,15 +46,10 @@ const ResumenLocal = (  ) => {
   
           setLoading(false)
         }
-
-        const showDetail = (e:any) => {
-            console.log(searchParams.get("localId"));
-            //navigate(`/ventas/resumen-local-detalle/${searchParams.get("localId")}`);
-        }
         
   useEffect(() => {
     getReportData();
-  }, []);
+  }, [paramData.reportDate]);
 
   const ReportTable = <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-900 border-b border-stroke py-2 px-3 dark:border-strokedark">
   <thead className='text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400'>
@@ -64,7 +68,7 @@ const ResumenLocal = (  ) => {
   </thead>
   <tbody className='w-full'>
       {
-          reportData.map((local:any, index:number) => (
+          reportData[0].local!==''?reportData.map((local:any, index:number) => (
           <tr  className="bg-white dark:bg-graydark dark:text-gray" 
               key={index}>
               <td className="px-3 py-3" >{local.numero}</td>
@@ -78,7 +82,7 @@ const ResumenLocal = (  ) => {
               <td className="px-3 py-3" >{Currency.format(local.totalLinea)}</td>
               <td className="px-3 py-3" >{local.vendedor}</td>
           </tr>
-      ))}
+      )):<tr><td colSpan={12} className="px-3 py-3 text-center">No hay datos para mostrar</td></tr>}
   </tbody>
 </table>
 
@@ -86,7 +90,8 @@ return (
 <div className="flex flex-col gap-2 mt-1">   
     <div className="w-full p-5 text-center rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
     <h1 className="text-3xl" ><strong>{loading?<Loader></Loader>:reportData[0].local}</strong></h1>
-    <h2 className="text-xl" >{loading?<Loader></Loader>:reportData[0].fecha}</h2>    
+    <h2><strong><input className="text-2xl" 
+            type='date' name="reportDate" value={paramData.reportDate} onChange={handleChange}></input></strong></h2>
     </div>   
             {/* <!-- Report Data --> */}
     <div className="relative overflow-x-auto rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
