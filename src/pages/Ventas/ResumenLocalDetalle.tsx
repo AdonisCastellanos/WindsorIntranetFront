@@ -7,7 +7,7 @@ import { useSearchParams } from "react-router-dom";
 const ResumenLocal = (  ) => {
     const [loading, setLoading] = useState<boolean>(false);
 
-    const [reportData, setReportData] = useState<[{localId:string,local:string}]>([{localId:"",local:""}]);
+    const [reportData, setReportData] =  useState<[{localId:string,local:string,fecha:string}]>([{localId:"",local:"",fecha:""}]);
 
     const [searchParams] = useSearchParams();
 
@@ -59,7 +59,6 @@ const ResumenLocal = (  ) => {
           <th scope="col" className="px-6 py-3">Cantidad</th>
           <th scope="col" className="px-6 py-3">Precio</th>
           <th scope="col" className="px-6 py-3">Total Linea</th>
-          <th scope="col" className="px-6 py-3">Fecha</th>
           <th scope="col" className="px-6 py-3">Vendedor</th>
       </tr>
   </thead>
@@ -77,7 +76,6 @@ const ResumenLocal = (  ) => {
               <td className="px-3 py-3" >{local.cantidad}</td>
               <td className="px-3 py-3" >{Currency.format(local.precio)}</td>
               <td className="px-3 py-3" >{Currency.format(local.totalLinea)}</td>
-              <td className="px-3 py-3" >{local.fecha}</td>
               <td className="px-3 py-3" >{local.vendedor}</td>
           </tr>
       ))}
@@ -85,7 +83,11 @@ const ResumenLocal = (  ) => {
 </table>
 
 return (
-<div className="flex flex-col gap-2 mt-1">      
+<div className="flex flex-col gap-2 mt-1">   
+    <div className="w-full p-5 text-center rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <h1 className="text-3xl" ><strong>{loading?<Loader></Loader>:reportData[0].local}</strong></h1>
+    <h2 className="text-xl" >{loading?<Loader></Loader>:reportData[0].fecha}</h2>    
+    </div>   
             {/* <!-- Report Data --> */}
     <div className="relative overflow-x-auto rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
     {loading?<Loader></Loader>:ReportTable}    

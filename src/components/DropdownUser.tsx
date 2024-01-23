@@ -47,9 +47,9 @@ const DropdownUser = (props: {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+            Usuario
           </span>
-          <span className="block text-xs">UX Designer</span>
+          <span className="block text-xs">Rol</span>
         </span>
 
 

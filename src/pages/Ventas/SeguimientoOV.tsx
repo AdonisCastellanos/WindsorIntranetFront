@@ -19,10 +19,6 @@ const SeguimientoOV = () => {
   };
 
     const getReportData = async() => {
-        const userString:string = window.localStorage.getItem('WindsorIntranetUser')||"";
-        console.log(userString);
-        const user = JSON.parse(userString);
-        console.log(user);
         setLoading(true)        
         let options = {
             //body: paramData,
@@ -54,7 +50,7 @@ const SeguimientoOV = () => {
                         <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                         <div className="w-full xl:w-1/2">
                             <label className="mb-2.5 block text-black dark:text-white">
-                            Nota de Venta <span className="text-meta-1">*</span>
+                            Nota de Venta o Ref Cliente<span className="text-meta-1">*</span>
                             </label>
                             <input
                             type="text"

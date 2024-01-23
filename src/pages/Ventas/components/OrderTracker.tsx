@@ -31,6 +31,7 @@ const OrderTracker = ( props: {
     <div className="bg-gray-100 min-h-screen">
       <div className="container mx-auto p-8">
         <h1 className="text-2xl font-bold mb-4">Orden numero: {order.orderNo}</h1>
+        <h3 className="text-xl font-bold mb-4">Cliente: {order.customer}</h3>
         <div className="bg-white p-4 rounded">
           <div className="space-x-2 flex flex-wrap">
             

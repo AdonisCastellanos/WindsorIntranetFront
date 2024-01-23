@@ -1,5 +1,5 @@
 export const helpHttp:any = () => {
-    const serverApi = "http://localhost:3000/";
+    const serverApi = "http://186.103.166.99:3000/";
     
     const customFetch = async (endpoint:any, options:any) => {
 

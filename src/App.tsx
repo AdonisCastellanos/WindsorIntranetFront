@@ -12,7 +12,7 @@ const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
-  const [auth, setAuth] = useState<boolean>(window.localStorage.getItem('WindsorIntranetUserToken')!==null);
+  const [auth, setAuth] = useState<boolean>(true);//window.localStorage.getItem('WindsorIntranetUserToken')!==null
 
   const logout = () => {
     window.localStorage.removeItem('WindsorIntranetUserToken');
