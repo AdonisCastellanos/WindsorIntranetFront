@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import UserOne from '../images/user/user-01.png';
 
 const DropdownUser = (props: {
-  logout: () => void;}
+  logout: () => void;
+  user: any;
+  }
   ) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -47,9 +49,10 @@ const DropdownUser = (props: {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Usuario
+            {props.user?props.user.name:"Usuario"}
           </span>
-          <span className="block text-xs">Rol</span>
+          <span className="block text-xs">
+            {props.user?props.user.role:""}</span>
         </span>
 
 

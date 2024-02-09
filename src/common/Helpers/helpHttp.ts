@@ -1,5 +1,5 @@
 export const helpHttp:any = () => {
-    const serverApi = "http://localhost:3000/";
+    const serverApi = "http://38.7.203.45:3000/";
     
     const customFetch = async (endpoint:any, options:any) => {
 
@@ -14,6 +14,7 @@ export const helpHttp:any = () => {
         options.signal = controller.signal;
         options.method = options.method || "GET";
         options.headers = options.headers? {  ...defaultHeader, ...options.headers} : defaultHeader;
+        options.credentials = "include";
 
         options.body = JSON.stringify(options.body)||false;
         if(!options.body) delete options.body;

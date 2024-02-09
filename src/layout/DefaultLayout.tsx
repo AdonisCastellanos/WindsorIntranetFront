@@ -4,7 +4,9 @@ import Sidebar from '../components/Sidebar';
 import { Outlet } from 'react-router-dom';
 
 const DefaultLayout = (props: {
-  logout: () => void;}
+  logout: () => void;
+  user: any;
+}
   ) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -19,7 +21,7 @@ const DefaultLayout = (props: {
         {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
           {/* <!-- ===== Header Start ===== --> */}
-          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} logout= {props.logout}/>
+          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} logout= {props.logout} user={props.user}/>
           {/* <!-- ===== Header End ===== --> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}

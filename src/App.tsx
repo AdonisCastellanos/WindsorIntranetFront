@@ -13,41 +13,40 @@ const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
-  const [auth, setAuth] = useState<boolean>(window.localStorage.getItem('WindsorIntranetUser')!==null);
-  //const [user, setUser] = useState<any>();
+  const [auth, setAuth] = useState<boolean>(false);
+  const [user, setUser] = useState<any>();
   const [errorMessage, setErrorMessage] = useState({});
   
   let api = helpHttp();
 
-  const logout = () => {
-    localStorage.removeItem('WindsorIntranetUser');
-    setAuth(false);
+  const logout = async () => {
+    setLoading(true)   
+    let options = {
+    };  
+    await api.post(`api/v1/auth/logout`, options).then((res:any) => {
+      if (!res.err) {
+        setAuth(false);
+      } else {
+        setErrorMessage(res.message);
+      }
+  }).catch((err:any) => console.log(err));
+    setLoading(false)
+  }
+
+  function getCookie(key:string) {
+    let b = document.cookie.match("(^|;)\\s*" + key + "\\s*=\\s*([^;]+)");
+    return b ? b.pop() : "";
   }
 
   const singin = async (username: string, password: string) => {
-    setLoading(true)
-    console.log(username,password)      
+    setLoading(true)   
     let options = {
         body: {username,password},
     };  
-    /*if(username==="admin" && password==="1234"){
-      setAuth(true);
-      window.localStorage.setItem(
-        "WindsorIntranetUserToken", (`${username} ${password}`)
-      )
-      console.log(window.localStorage.getItem('WindsorIntranetUserToken'))
-    }
-    else {      
-      setAuth(false);
-    }*/
     await api.post(`api/v1/auth/login/`, options).then((res:any) => {
       if (!res.err) {
-        let user = JSON.stringify(res);
-        window.localStorage.setItem(
-          "WindsorIntranetUser", user
-        )
-        console.log(res)
-        console.log(user)
+        let user = res;      
+        setUser(user);
         setAuth(true);
       } else {
         setErrorMessage(res.message);
@@ -58,10 +57,29 @@ function App() {
   }
 
   useEffect(() => {
-    
+    let options = {
+    };  
+    api.get(`api/v1/auth/`, options).then((res:any) => {
+      if (!res.err) {
+        let user = res;
+        setUser(user);
+        setAuth(true);
+      } else {
+        console.log(res);
+        setAuth(false);
+        setErrorMessage(res.message);
+      }
+  }).catch((err:any) => console.log(err));
+  
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
+  if(loading){
+    return (
+      <Loader />
+    )
+  }
+    
   if(!auth){
     return (
       <>
@@ -72,9 +90,7 @@ function App() {
       )
   }
 
-  return loading ? (
-    <Loader />
-  ) : (
+  return (
     <>
       
       <Suspense fallback={<Loader />}>
@@ -86,7 +102,7 @@ function App() {
       <Routes>
         <Route path="/auth/signin" element={<SignIn singin={singin}/>} />
         <Route path="/auth/signup" element={<SignUp />} />
-        <Route element={<DefaultLayout logout={logout}/>}>
+        <Route element={<DefaultLayout logout={logout} user={user}/>}>
           <Route index element={<ECommerce />} />
           {routes.map((routes, index) => {
             const { path, component: Component } = routes;
