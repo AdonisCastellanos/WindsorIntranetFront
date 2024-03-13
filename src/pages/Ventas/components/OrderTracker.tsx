@@ -160,6 +160,11 @@ const OrderTracker = ( props: {
                 
                 </div>              
                 <p><strong>Entregado</strong>  </p>
+                { order.showEmailNotificationSent==='Y'?
+                  <p><strong>Correo Enviado:</strong> {order.EmailNotificationSent==='Y'?'Si':'No'}</p>
+                  :
+                  <p></p>
+                }
               </div>      
               
             </div>
